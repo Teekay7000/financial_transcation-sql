@@ -95,9 +95,9 @@ I will continue updating this repository as I learn new concepts and complete mo
 * [x] Aggregate functions
 * [x] GROUP BY
 * [x] ORDER BY
-* [ ] LIMIT
-* [ ] HAVING
-* [ ] CASE statements
+* [x] LIMIT
+* [x] HAVING
+* [x] CASE statements
 * [ ] JOINs
 * [ ] Subqueries
 * [ ] CTEs
