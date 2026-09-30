@@ -160,3 +160,46 @@ FROM financial_transactions
 GROUP BY category
 ORDER BY SUM(amount) DESC;
 
+--Find the top 3 customers who have the highest total transaction amount.
+SELECT customer_name, SUM(amount)
+FROM financial_transactions
+GROUP BY customer_name
+ORDER BY SUM(amount) DESC
+LIMIT 3;
+
+--Shows each category and its total transaction amount,
+--but only shows categories where the total is greater than R20,000.
+SELECT category, SUM(amount) AS total_amount
+FROM financial_transactions
+GROUP BY category
+HAVING SUM(amount) > 20000;
+
+--Find the total amount spent in each category for transactions greater than R1,000, 
+--and only show categories whose resulting total is greater than R15,000.
+SELECT category, SUM(amount)
+FROM financial_transactions 
+WHERE amount > 1000
+GROUP BY category 
+HAVING SUM(amount) > 15000;
+
+--Imagine a bank wants to classify transactions based on their amount.
+--Create a new column called risk_level using these rules:
+SELECT amount,
+CASE
+     WHEN amount < 2000 THEN 'Low'
+	 WHEN amount <= 10000 THEN 'Medium'
+	 ELSE 'Large'
+END AS risk_level
+FROM financial_transactions;
+
+--A bank wants to classify customers based on their transaction amount:
+SELECT customer_name,
+amount,
+CASE
+     WHEN amount < 1000 THEN 'Low value'
+	 WHEN amount <= 5000 THEN 'Normal'
+	 WHEN amount <= 10000 THEN 'High value'
+	 ELSE 'Very high value'
+END AS classification
+FROM financial_transactions;
+
