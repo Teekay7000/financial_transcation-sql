@@ -45,6 +45,79 @@ I am building my SQL skills with a focus on data analysis and data engineering. 
 * Aggregating data using CTEs
 * Using one CTE as the input for another CTE
 
+### JOINs
+
+I started learning how to combine data from multiple related tables using JOINs.
+
+Topics currently covered:
+
+* INNER JOIN
+* Joining tables using a common key
+* Table aliases
+* Joining customer information with transaction information
+* Joining customer information with account information
+* Combining JOINs with WHERE
+* Combining JOINs with GROUP BY
+* Combining JOINs with aggregate functions
+* Combining JOINs with HAVING
+* Understanding when a JOIN is actually necessary
+
+### INNER JOIN
+
+An `INNER JOIN` returns rows where a matching value exists in both tables.
+
+For example:
+
+```sql
+SELECT
+    c.customer_name,
+    c.phone_number,
+    ft.amount,
+    ft.transaction_type
+FROM customers c
+INNER JOIN financial_transactions ft
+    ON c.customer_id = ft.customer_id;
+```
+
+I learned that table aliases can make queries easier to read:
+
+* `c` → `customers`
+* `ft` → `financial_transactions`
+* `ca` → `customer_accounts`
+
+I also learned that a JOIN should not be used unnecessarily. If all the required information already exists in one table, there is no need to JOIN another table.
+
+### JOIN with Aggregation
+
+I practiced combining JOINs with aggregate functions.
+
+For example, calculating the total deposit amount for each customer:
+
+```sql
+SELECT
+    c.customer_name,
+    SUM(ft.amount) AS total_deposits
+FROM customers c
+INNER JOIN financial_transactions ft
+    ON c.customer_id = ft.customer_id
+WHERE ft.transaction_type = 'Deposit'
+GROUP BY c.customer_name;
+```
+
+I also practiced using `HAVING` to filter aggregated results:
+
+```sql
+SELECT
+    c.customer_name,
+    SUM(ft.amount) AS total_amount
+FROM customers c
+INNER JOIN financial_transactions ft
+    ON c.customer_id = ft.customer_id
+WHERE ft.transaction_type = 'Deposit'
+GROUP BY c.customer_name
+HAVING SUM(ft.amount) > 20000;
+```
+
 ## Dataset
 
 The current practice dataset is a fictional financial transactions dataset containing approximately 100 transactions.
@@ -62,6 +135,31 @@ The dataset includes information such as:
 * Payment method
 * Branch
 * Transaction status
+
+Additional tables were created to practice JOINs.
+
+### Customers
+
+The `customers` table contains:
+
+* Customer ID
+* Customer name
+* Phone number
+* Address
+* Tag number
+
+### Customer Accounts
+
+The `customer_accounts` table contains:
+
+* Account ID
+* Customer ID
+* Account number
+* Account type
+* Account status
+* Date opened
+
+The tables are related using `customer_id`.
 
 ## Example Queries
 
@@ -150,6 +248,18 @@ SELECT
     amount
 FROM financial_transactions
 WHERE transaction_type IN ('Deposit', 'Withdrawal');
+```
+
+### Find deposits greater than R5,000
+
+```sql
+SELECT
+    customer_name,
+    transaction_type,
+    amount
+FROM financial_transactions
+WHERE transaction_type = 'Deposit'
+  AND amount > 5000;
 ```
 
 ## CASE Statements
@@ -245,6 +355,74 @@ This exercise helped me understand how to:
 * Calculate SUM, COUNT and AVG
 * Filter aggregated results in the final query
 
+## Real-World SQL Requirements
+
+I also started practicing how to translate business requirements into SQL queries.
+
+For example:
+
+> The finance team wants to identify branches that processed completed deposits. For each branch, calculate the number of deposits, total deposit value, and average deposit amount. Only include branches with total deposits greater than R50,000.
+
+The resulting query was:
+
+```sql
+SELECT
+    branch,
+    SUM(amount) AS total_amount,
+    COUNT(*) AS total_deposited,
+    AVG(amount) AS total_avg
+FROM financial_transactions
+WHERE transaction_type = 'Deposit'
+  AND status = 'Completed'
+GROUP BY branch
+HAVING SUM(amount) > 50000;
+```
+
+This exercise helped me practice combining:
+
+* WHERE
+* GROUP BY
+* COUNT
+* SUM
+* AVG
+* HAVING
+
+I also learned how `COUNT(*)` works with filtering.
+
+For example:
+
+```sql
+WHERE transaction_type = 'Deposit'
+```
+
+followed by:
+
+```sql
+COUNT(*)
+```
+
+counts the number of rows that remain after the filter.
+
+This means that `WHERE` determines which rows are available for `COUNT(*)`, `SUM()`, and `AVG()`.
+
+## Understanding GROUP BY with Aggregate Functions
+
+I learned that `GROUP BY` determines the groups over which aggregate functions operate.
+
+For example:
+
+```sql
+SELECT
+    branch,
+    AVG(amount) AS average_amount
+FROM financial_transactions
+GROUP BY branch;
+```
+
+Here, `AVG(amount)` calculates a separate average for each branch because the data is grouped by `branch`.
+
+Without `GROUP BY`, the average would be calculated across the entire filtered dataset.
+
 ## SQL Query Execution Order
 
 I also learned the basic logical order in which SQL processes a query:
@@ -267,6 +445,22 @@ LIMIT
 
 Understanding this order helps me understand why different SQL clauses are used for different types of filtering and aggregation.
 
+## Key Lessons
+
+Through these exercises, I have learned that:
+
+* `WHERE` filters individual rows before aggregation.
+* `GROUP BY` determines the groups used by aggregate functions.
+* `SUM()` calculates totals within each group.
+* `AVG()` calculates averages within each group.
+* `COUNT(*)` counts rows remaining after filtering.
+* `HAVING` filters groups after aggregation.
+* `JOIN` combines related data from different tables.
+* Table aliases make queries easier to read.
+* A JOIN should only be used when information from another table is actually required.
+* Business requirements can be translated into SQL logic.
+* Aggregate functions can be combined with filtering and grouping to answer business questions.
+
 ## Progress
 
 * [x] SQL basics
@@ -285,6 +479,15 @@ Understanding this order helps me understand why different SQL clauses are used 
 * [x] CTEs
 * [x] Multiple CTEs
 * [ ] JOINs
+
+  * [x] INNER JOIN
+  * [ ] LEFT JOIN
+  * [ ] RIGHT JOIN
+  * [ ] FULL OUTER JOIN
+  * [x] JOIN + WHERE
+  * [x] JOIN + GROUP BY
+  * [x] JOIN + HAVING
+  * [ ] Multiple-table JOINs
 * [ ] Subqueries
 * [ ] Window functions
 * [ ] PostgreSQL
