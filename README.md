@@ -50,6 +50,15 @@ I am building my SQL skills with a focus on data analysis and data engineering. 
 * JOIN with GROUP BY
 * JOIN with HAVING
 * JOIN with aggregate functions
+* SELF JOIN
+* Multiple-condition JOINs
+
+### Subqueries
+
+* Basic subqueries
+* Subqueries with aggregate functions
+* Nested subqueries
+* Comparing aggregated results using subqueries
 
 ## Dataset
 
@@ -62,7 +71,7 @@ I also created:
 * `customers`
 * `customer_accounts`
 
-These tables are used to practice JOINs and working with related data.
+These tables are used to practice JOINs, subqueries, and working with related data.
 
 ## What I Have Learned
 
@@ -75,7 +84,11 @@ I have learned how to:
 * Write CTEs
 * Combine data from multiple tables
 * Use JOINs with filtering and aggregation
-* Translate simple business requirements into SQL queries
+* Use SELF JOINs
+* Use multiple conditions when joining tables
+* Write subqueries and nested subqueries
+* Compare aggregated results using subqueries
+* Translate business requirements into SQL queries
 
 ## Progress
 
@@ -95,9 +108,9 @@ I have learned how to:
 * [x] JOIN with WHERE
 * [x] JOIN with GROUP BY
 * [x] JOIN with HAVING
-* [ ] SELF JOIN
-* [ ] Multiple-condition JOINs
-* [ ] Subqueries
+* [x] SELF JOIN
+* [x] Multiple-condition JOINs
+* [x] Subqueries
 * [ ] Window functions
 * [ ] PostgreSQL-specific features
 * [ ] SQL projects
